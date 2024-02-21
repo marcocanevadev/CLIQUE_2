@@ -185,6 +185,19 @@
 
     }
 
+    function getRespect($cid, $email){
+      $sql = "SELECT `respect` FROM USER WHERE mail = '$email'";
+      $res = $cid->query($sql);
+      $row=$res->fetch_assoc();
+      return $row['respect'];
+    }
+
+    function updateRespect($cid, $email, $respect){
+      $sql = "UPDATE USER SET `respect` = '$respect' WHERE mail = '$email'"; 
+      $res = $cid->query($sql);
+      return $res;
+    }
+
 
     function setUser($cid, $email, $field, $val){
         $sql = "UPDATE USER SET $field = '$val' WHERE mail = '$email'";
@@ -537,10 +550,13 @@
 
       $respect += $tot;
 
-      updateRespect($cid, $email, $respect);
-      
-      
+      if ($respect<=0) {
+        $sql = "UPDATE USER SET bloccatoda = 'SYSTEM' WHERE mail = '$email'";
+        $res = $cid->query($sql);
+      }
 
+      updateRespect($cid, $email, $respect);
+    
     }
 
     function printPosts($cid, $data, $home) {
@@ -872,9 +888,5 @@
       $sql="INSERT INTO `COMMENTO` (`mail_commentatore`, `post_id`, `timestamp_commento`, `indice_gradimento`, `testo_commento`) VALUES ('$email', '$post', CURRENT_TIMESTAMP, '$grad', '$text');";
       $res = $cid->query($sql);
       return $res;
-    }
-
-    function createRefComAPost($cid, $comment, $post){
-
     }
 ?>

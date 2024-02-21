@@ -500,6 +500,31 @@
         return null;
     }
 
+    function postVote($cid, $post_id){
+      $commenti = findComments($cid, $post_id);
+      if ($commenti == null){
+        $commenti = [];
+      }
+      $i = 0;
+      $tot = 0;
+      foreach($commenti as $commt){
+        if ($commt['indice_gradimento'] != null){
+          $i += 1;
+          $tot += $commt['indice_gradimento'];
+        }
+      }
+      if ($i != 0){
+        $mipiace = $tot / $i;
+        $mipiace = number_format($mipiace, 1);
+      }else{
+        $mipiace = number_format(0,1);
+      }
+
+      return $mipiace;
+
+
+    }
+
     function printPosts($cid, $data, $home) {
 
         if ($data == null){
@@ -512,21 +537,9 @@
           if ($commenti == null){
             $commenti = [];
           }
-          $i = 0;
-          $tot = 0;
-          foreach($commenti as $commt){
-            if ($commt['indice_gradimento'] != null){
-              $i += 1;
-              $tot += $commt['indice_gradimento'];
-            }
-          }
-          if ($i != 0){
-            $mipiace = $tot / $i;
-            $mipiace = number_format($mipiace, 1);
-          }else{
-            $mipiace = number_format(0,1);
-          }
 
+          $mipiace = postVote($cid, $row['post_id']);
+          
           
 
             $text = "";

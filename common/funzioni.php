@@ -525,6 +525,24 @@
 
     }
 
+    function setScore($cid, $email){
+      $respect = getRespect($cid, $email);
+
+      $posts = findMyPosts($cid, $email);
+      $tot = 0;
+      foreach($posts as $post){
+        $tot += postVote($cid, $post['post_id']);
+      }
+      $tot *= 0.5;
+
+      $respect += $tot;
+
+      updateRespect($cid, $email, $respect);
+      
+      
+
+    }
+
     function printPosts($cid, $data, $home) {
 
         if ($data == null){

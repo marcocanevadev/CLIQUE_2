@@ -15,6 +15,9 @@
 
   $res = createComment($cid, $post, $text, $email, $grad);
 
+  setScore($cid, $email);
+  
+
   if ($res == null){
     header('location:../frontend/homie.php?status=ko');
   }else{

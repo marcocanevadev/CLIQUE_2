@@ -482,10 +482,10 @@
     }
 
     function findPostAmici($cid,$email){
-        $sql="SELECT nome, cognome, post_id, P1.mail, timestamp_post, tipo_post, testo_post, img_desc, img_path, img_nome, img_citta
+        $sql="SELECT nome, cognome, post_id, P1.mail as mail, timestamp_post, tipo_post, testo_post, img_desc, img_path, img_nome, img_citta
         FROM POST P1 JOIN RICHIESTE ON P1.mail=mail_richiedente JOIN USER U1 ON P1.mail=U1.mail
         WHERE mail_accettatore='$email' AND timestamp_accettazione IS NOT NULL AND timestamp_fine IS NULL
-        UNION SELECT nome, cognome, post_id, P2.mail,timestamp_post, tipo_post, testo_post, img_desc, img_path, img_nome, img_citta 
+        UNION SELECT nome, cognome, post_id, P2.mail as mail ,timestamp_post, tipo_post, testo_post, img_desc, img_path, img_nome, img_citta 
         FROM POST P2 JOIN RICHIESTE ON P2.mail=mail_accettatore JOIN USER U2 ON P2.mail=U2.mail
         WHERE mail_richiedente='$email' AND timestamp_accettazione IS NOT NULL AND timestamp_fine IS NULL
         ORDER BY post_id DESC";
@@ -546,9 +546,11 @@
       foreach($posts as $post){
         $tot += postVote($cid, $post['post_id']);
       }
+      $n = sizeof($posts);
       $tot *= 0.5;
+      $tot /= $n;
 
-      $respect += $tot;
+      $respect = $tot + 7;
 
       if ($respect<=0) {
         $sql = "UPDATE USER SET bloccatoda = 'SYSTEM' WHERE mail = '$email'";
@@ -564,9 +566,12 @@
         if ($data == null){
             return null;
         }
+
+        
         
 
         foreach ($data as $row){
+          
           $commenti= findComments($cid, $row['post_id']);
           if ($commenti == null){
             $commenti = [];
@@ -661,6 +666,7 @@
                         <input type='text' id='formControlLg' class='form-control form-control-lg pb-2' name='commento'/>
                       </div>
                       <input type='hidden' name='post_id' value='".$row['post_id']."'/>
+                      <input type='hidden' name='mail_poster' value='".$row['mail']."'/>
                       <div class='row'>
                         <div class='col-md-2'>
                           <input class='btn btn-outline-primary' type='submit' value='Submit'>
@@ -771,6 +777,7 @@
                         <input type='text' id='formControlLg' class='form-control form-control-lg pb-2' name='commento'/>
                       </div>
                       <input type='hidden' name='post_id' value='".$row['post_id']."'/>
+                      <input type='hidden' name='mail_poster' value='".$row['mail']."'/>
                       <div class='row'>
                         <div class='col-md-2'>
                           <input class='btn btn-outline-primary' type='submit' value='Submit'>

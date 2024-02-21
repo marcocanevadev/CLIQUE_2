@@ -8,14 +8,17 @@
   $text = $_POST['commento'];
   $grad = $_POST['indice_gradimento'];
   $post = $_POST['post_id'];
+  $mail_post = $_POST['mail_poster'];
   $text=str_replace("'","\\'",$text);
 
   $grad = (int)$grad;
   
-
+ 
   $res = createComment($cid, $post, $text, $email, $grad);
 
-  setScore($cid, $email);
+
+
+  setScore($cid, $mail_post);
   
 
   if ($res == null){

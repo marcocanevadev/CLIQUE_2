@@ -46,6 +46,8 @@ $cities = getAllCities($cid);
 
           $postAmici = findPostAmici($cid, $_SESSION['email']);
 
+          
+
         ?>
         
         <div class="col-lg-9">

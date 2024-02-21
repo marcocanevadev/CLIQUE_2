@@ -11,12 +11,12 @@
   $nomecogn=$name['nome'].' '.$name['cognome'];
   $handle = gethandle($mail);
   $type = getTypo($cid, $mail);
-
+  $respect = getRespect($cid, $mail);
   //$name = 'TONy';
 
   $current_page = basename($_SERVER['PHP_SELF']);
 
-  
+
 
 ?>
 
@@ -27,7 +27,8 @@
         <div class="col-sm-9"> <!--Da verificare se ha senso-->
           <img src="https://i.ibb.co/Bgp883W/faccina.png" class="img-circle" height="35" width="35" alt="Avatar">
           <h4 class="card-title"><?php echo "$nomecogn";?></h4>   
-          <h6 class="card-subtitle mb-2 text-body-secondary"><?php echo "$handle";?></h6> 
+          <h6 class="card-subtitle mb-2 text-body-secondary"><?php echo "$handle";?>  <span class='badge text-bg-secondary'> <?php echo $respect; ?></span></h6> 
+          
           
           
                                     

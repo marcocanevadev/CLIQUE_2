@@ -903,4 +903,46 @@
       $res = $cid->query($sql);
       return $res;
     }
+
+    //Returna il numero di commenti fatti da user$email sotto il post$post_id
+    function numComm($cid, $email, $post_id){
+      $sql = "SELECT COUNT(comment_id) FROM COMMENTO WHERE mail_commentatore = '$email' AND post_id = '$post_id'";
+      $res = $cid->query($sql);
+      return $res;
+    }
+
+    //returna true se $email ha mai messo un indice di gradimento NOTNULL 
+    //returna false se non ha commentato o se sono tutti null
+    function liked($cid, $email, $post) {
+      $sql = "SELECT comment_id, indice_gradimento FROM COMMENTO WHERE mail_commentatore = '$email' AND post_id = '$post'";
+      $res = $cid->query($sql);
+      if ($res != null) {
+        
+        while ($row=$res->fetch_assoc()) {
+          if ($row["indice_gradimento"] != null) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    //returna array con tutti gli utenti che non abitano E non sono nati nella stessa città
+    function notSameCity($cid, $email) {
+      $sql = "SELECT mail FROM USER WHERE citta IN (SELECT citta FROM USER WHERE mail = '$email') OR luogo_n IN (SELECT luogo_n FROM USER WHERE mail = '$email')";
+      $res = $cid->query($sql);
+      if ($res != null){
+        $user = null;
+        while ($row=$res->fetch_assoc()) {
+            $user = array("mail"=>$row["mail"]);
+        }
+        $risultato= $user;
+        return $risultato;
+      }
+      return null;
+    }
+
+
+
+
 ?>

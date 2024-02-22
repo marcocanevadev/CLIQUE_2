@@ -23,25 +23,33 @@
 
   
 
-  //$num_comm = 0;
-  //$liked = false;
-  if ($num_comm >= 6){
-    header('location:../frontend/homie.php?status=ko');
-  }
-
-
   if ($liked or $grad == 0){
     echo "ciao";
     $grad = 'NULL';
   }
 
+
+  //$num_comm = 0;
+  //$liked = false;
+  if ($num_comm >= 6){
+    echo "hello";
+    
+    header('location:../frontend/homie.php?status=ko');
+    $res = null;
+  }else{
+    $res = createComment($cid, $post, $text, $email, $grad);
+    setScore($cid, $mail_post);
+  }
+
+
+  
   
  
-  $res = createComment($cid, $post, $text, $email, $grad);
+  //$res = createComment($cid, $post, $text, $email, $grad);
 
 
 
-  setScore($cid, $mail_post);
+  //setScore($cid, $mail_post);
   
 
   if ($res == null){

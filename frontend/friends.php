@@ -86,17 +86,24 @@ $d = "" ;
 
                 <script>
                     document.getElementById('btnA').addEventListener('click', function() {
-                        <?php $a = $a ? '' : 'active'; ?>;
+                        <?php $a = $a ? '' : 'active'; 
+                        
+                        
+                        ?>;
                         this.classList.toggle('active');
                     });
 
                     document.getElementById('btnB').addEventListener('click', function() {
-                        <?php $b = $b ? '' : 'active'; ?>;
+                        <?php $b = $b ? '' : 'active'; 
+                        
+                        ?>;
                         this.classList.toggle('active');
                     });
 
                     document.getElementById('btnC').addEventListener('click', function() {
-                        <?php $c = $c ? '' : 'active'; ?>;
+                        <?php $c = $c ? '' : 'active'; 
+                        
+                        ?>;
                         this.classList.toggle('active');
                     });
 

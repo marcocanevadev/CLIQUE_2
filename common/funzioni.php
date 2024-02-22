@@ -400,13 +400,7 @@
   
       foreach ($data as $row){
         
-        $stats = getStatsPost($cid, $row["mail"]);
-        if ($stats[0]==null){
-          $stats[0]=0;
-        }
-        if ($stats[1]==null){
-          $stats[1]=0;
-        }
+        
 
           if ($type == 'block'){
             if ($row['bloccatoda'] == null){
@@ -453,6 +447,14 @@
           echo"
           </div>";
           if ($type == 'top' or $type == 'block'){
+
+            $stats = getStatsPost($cid, $row["mail"]);
+            if ($stats[0]==null){
+              $stats[0]=0;
+            }
+            if ($stats[1]==null){
+              $stats[1]=0;
+            }
               echo "
               <div class='row'>
               <div class='col-md-3'>

@@ -364,6 +364,13 @@
         }
     }
 
+    function printRefOption($data){
+      foreach ($data as $row){
+          echo "<option value=".$row['post_id'].">".$row['mail']." ".$row['timestamp_post']."</option>";
+      }
+  }
+
+
     function printFriends($cid, $data, $type, $nrs = null){
       if ($data == null){
           return null;
@@ -696,6 +703,9 @@
                 ";
                 
               foreach ($commenti as $comm){
+
+                $ref = getReference($cid, $row['post_id'], $comm['comment_id']);
+                
                 echo "<div class='card card-body mb-1'>
                         <div class='row'>
                           <div class='col-1'>
@@ -711,6 +721,12 @@
                           <div class='col-10'>
                             <p class='card-text'>".$comm['testo_commento']."</p>
                           </div>
+                        </div>
+                        <div class='row'>
+                          <div class='col-1'></div>
+                          <div class='col-10'>
+                            <p class='card-text'>".$ref['mail']." ".$ref['timestamp_post']."</p>
+                          </div>
                         </div>                        
                       </div>";
               }
@@ -718,7 +734,7 @@
                 
                 echo " 
                 <!-- dopo i commenti la possibilità di inserire il tuo -->";
-                printCommentForm($row);
+                printCommentForm($cid, $row);
                 echo "
               </div>  <!-- chiude il collapse dei commenti-->
             </div>      <!-- chiude il card body del post-->
@@ -797,7 +813,7 @@
                     <!-- dopo i commenti la possibilità di inserire il tuo -->
                 ";
 
-                printCommentForm($row);
+                printCommentForm($cid, $row);
                 echo "
               </div>  <!-- chiude il collapse dei commenti-->
                 </div>          <!-- chiude il card body -->
@@ -810,7 +826,10 @@
         }
     }
 
-    function printCommentForm($row){
+    function printCommentForm($cid, $row){
+      $post = findPostAmici($cid, $_SESSION['email']);
+
+
       echo "
       <form action='../backend/checkComment.php' method='POST'>
                 <div class='card card-body mb-1'>
@@ -826,6 +845,14 @@
                     <div class='form-outline'>
                       <div class='input-group pb-2'>
                         <input type='text' id='formControlLg' class='form-control form-control-lg pb-2' name='commento' maxlength='100'/>
+                      </div>
+                      <div class='input-group pb-2'>
+                        <select class='form-select form-select-md' name ='reference'>";
+                        
+                        echo '<option selected>referenzia</option>';
+                                        
+                        printRefOption($post);
+                        echo " </select>
                       </div>
                       <input type='hidden' name='post_id' value='".$row['post_id']."'/>
                       <input type='hidden' name='mail_poster' value='".$row['mail']."'/>
@@ -845,6 +872,7 @@
                               <button type='radio' class='btn btn-outline-primary' name='indice_gradimento' value=1>1</button>
                               <button type='radio' class='btn btn-outline-primary' name='indice_gradimento' value=2>2</button>
                               <button type='radio' class='btn btn-outline-primary' name='indice_gradimento' value=3>3</button>
+
                             </div>
                           </div>
                         </div>
@@ -1067,6 +1095,34 @@
       return $risultato;
     }
     return null;
+  }
+
+  function findCommentID($cid, $post_id, $text) {
+    $sql = "SELECT comment_id FROM COMMENTO WHERE post_id='$post_id' AND testo_commento='$text'";
+    $res = $cid->query($sql);
+    if ($res != null){
+      $row=$res->fetch_assoc();
+    }
+
+    return $row['$comment_id'];
+  }
+
+  function referenceComment($cid, $reference, $comment_id) {
+    $sql = "INSERT INTO `RIFERISCE` (`comment_id`, `post_id_riferito`) VALUES ('$comment_id', '$reference');";
+    $res = $cid->query($sql);
+    return $res;
+  }
+
+  function getReference($cid, $post, $comment_id){
+    $sql = "SELECT id_ref, comment_id, post_id_riferito, mail, timestamp_post FROM RIFERRISCE JOIN POST ON post_id_riferito=post_id WHERE comment_id='$comment_id'";
+    $res = $cid->query($sql);
+
+    if ($res != null){
+      $row=$res->fetch_assoc();
+    }
+    $risultato = [$row['post_id_riferito'], $row['mail'], $row['timestamp_post']];
+    //print_r($risultato); exit();
+    return $risultato;
   }
 
 ?>

@@ -16,7 +16,7 @@
   $grad = $_POST['indice_gradimento'];
   $post = $_POST['post_id'];
   $mail_post = $_POST['mail_poster'];
-
+  $reference = $_POST['reference'];
 
   $num_comm = numComm($cid, $email, $post);
   $liked = liked($cid, $email, $post);
@@ -40,7 +40,9 @@
     $res = createComment($cid, $post, $text, $email, $grad);
     setScore($cid, $mail_post);
   }
-
+  
+  $id_comment = findCommentID($cid, $post_id, $text);
+  referenceComment($cid, $reference, $comment_id);
 
   
   

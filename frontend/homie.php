@@ -11,7 +11,6 @@ require "../common/funzioni.php";
 $cities = getAllCities($cid);
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 	<head>

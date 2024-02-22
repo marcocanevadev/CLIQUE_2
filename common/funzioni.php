@@ -944,9 +944,11 @@
 
     //Returna il numero di commenti fatti da user$email sotto il post$post_id
     function numComm($cid, $email, $post_id){
-      $sql = "SELECT COUNT(comment_id) FROM COMMENTO WHERE mail_commentatore = '$email' AND post_id = '$post_id'";
+      $sql = "SELECT COUNT(comment_id) as count FROM COMMENTO WHERE mail_commentatore = '$email' AND post_id = '$post_id'";
       $res = $cid->query($sql);
-      return $res;
+      $row = $res->fetch_assoc();
+
+      return $row['count'];
     }
 
     //returna true se $email ha mai messo un indice di gradimento NOTNULL 

@@ -56,7 +56,7 @@ $d = "" ;
             <div class="card card-body ">
               <h4 class="card-title">Your friends:</h4>
               <?php
-              printFriends($oldfriends,'old');
+              printFriends($cid, $oldfriends,'old');
               ?>
             </div>
           </div>
@@ -64,8 +64,8 @@ $d = "" ;
             <div class="card card-body ">
               <h4 class="card-title">Pending requests:</h4>
                 <?php
-                printFriends($infriends,"pending_in");
-                printFriends($outfriends,"pending_out");
+                printFriends($cid, $infriends,"pending_in");
+                printFriends($cid, $outfriends,"pending_out");
                 ?>
             </div>
           </div>
@@ -106,7 +106,7 @@ $d = "" ;
               
               </div>
                 <?php
-                printFriends($newfriends,"new");
+                printFriends($cid, $newfriends,"new");
                 ?>
             </div>
           </div>

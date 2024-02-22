@@ -364,72 +364,110 @@
         }
     }
 
-    function printFriends($data, $type){
-        if ($data == null){
-            return null;
-        }
-
-        $disabled = "";
-
-        if ($type == "new"){
-            $outline="outline-primary";
-            $text = "Add";
-            //$action = 'befriend.php';
-        }elseif ($type == 'old'){
-            $outline= "danger";
-            $text = "Unfriend";
-            //$action = 'unfriend.php';
-        }elseif ($type =='pending_in'){
-            $outline= "primary";
-            $text = "Accept";
-            //$action = 'unfriend.php';
-        }elseif ($type =='pending_out'){
-            $outline= "outline-secondary disabled";
-            $text = "Pending";
-            $disabled = "aria-disabled='true'";
-            //$action = 'unfriend.php';
-        }elseif ($type =='block'){
-            $outline = "";
-            $text = "";
-        }
-
-        foreach ($data as $row){
-            if ($type == 'block'){
-              if ($row['bloccatoda'] == null){
-                $outline = "danger";
-                $text = "Block";
-              }else{
-                $outline = "outline-primary";
-                $text = "Unblock";
-              }
+    function printFriends($cid, $data, $type, $nrs = null){
+      if ($data == null){
+          return null;
+      }
+  
+      $disabled = "";
+  
+      
+  
+      if ($type == "new"){
+          $outline="outline-primary";
+          $text = "Add";
+          //$action = 'befriend.php';
+      }elseif ($type == 'old'){
+          $outline= "danger";
+          $text = "Unfriend";
+          //$action = 'unfriend.php';
+      }elseif ($type =='pending_in'){
+          $outline= "primary";
+          $text = "Accept";
+          //$action = 'unfriend.php';
+      }elseif ($type =='pending_out'){
+          $outline= "outline-secondary disabled";
+          $text = "Pending";
+          $disabled = "aria-disabled='true'";
+          //$action = 'unfriend.php';
+      }elseif ($type =='block'){
+          $outline = "";
+          $text = "";
+      }elseif ($type == 'top'){
+          $outline = "";
+          $text = "";
+      }
+  
+      foreach ($data as $row){
+          if ($type == 'block'){
+            if ($row['bloccatoda'] == null){
+              $outline = "danger";
+              $text = "Block";
+            }else{
+              $outline = "outline-primary";
+              $text = "Unblock";
             }
-            echo "
-            <div class='row pb-2 px-2'>
-            <div class='card card-body'>
-            <div class='row pb-2'>
-              <div class='col-1'>
-                <img src='https://i.ibb.co/Bgp883W/faccina.png' class='img-circle' height='35' width='35' alt='Avatar'>
-              </div>
-              <div class='col-1'> </div>
-              <div class='col-4'>
-                <h6 class='card-title'>".$row["nome"]." ".$row["cognome"]."</h6>                
-              </div>               
-              <div class='col-4'>
-                <h6 class='card-title text-body-secondary'>
-                  ".gethandle($row["mail"])."
-                </h6>
-              </div>
-              
-              <div class='col-2'>
+          }
+          echo "
+          <div class='row pb-2 px-2'>
+          <div class='card card-body'>
+          <div class='row pb-2'>
+            <div class='col-1'>
+              <img src='https://i.ibb.co/Bgp883W/faccina.png' class='img-circle' height='35' width='35' alt='Avatar'>
+            </div>
+            <div class='col-1'> </div>
+            <div class='col-4'>
+              <h6 class='card-title'>".$row["nome"]." ".$row["cognome"]."</h6>                
+            </div>               
+            <div class='col-3'>
+              <h6 class='card-title text-body-secondary'>
+                ".gethandle($row["mail"])."
+              </h6>
+            </div>
+            <div class='col-1'>
+              <h6 class='card-title text-body-secondary'>
+                <span class='badge text-bg-secondary'>".number_format(getRespect($cid, $row['mail']),1)."</span>
+              </h6>
+            </div>";
+            if ($type != 'top'){
+              echo "<div class='col-2'>
               <a href='../backend/befriend.php?mail=".$row["mail"]."&tipo=".$text."' class='w-100 btn btn-".$outline."  btn-block'".$disabled.">".$text."</a>
               
+              </div>";
+            }elseif ($type == 'top'){
+              echo "<div class='col-2'>
+              <a href='../backend/befriend.php?mail=".$row["mail"]."&tipo=".$text."' class='w-100 btn btn-".$outline."  btn-block'".$disabled.">".$text."</a>
+              
+              </div>";
+            }
+            
+          echo"
+          </div>";
+          if ($type == 'top' or $type == 'block'){
+              echo "
+              <div class='row'>
+              <div class='col-md-3'>
+                  POST
               </div>
-
-            </div>
-            </div>
-            </div>";
-        }
-    }
+              <div class='col-md-3'>
+                  <p> Num Min</p> <span class='text-end'> 4</span>
+              </div>
+              <div class='col-md-3'>
+              <p> Num Max</p> <span class='text-end'> 4</span>
+              </div>
+              <div class='col-md-3'>
+              <p> Num Medio</p> <span class='text-end'> 4</span>
+              </div>
+              
+              </div>
+              ";
+          }
+  
+          echo"
+          </div>
+          </div>";
+      }
+  }
 
     function findPostCity($cid, $id){
         $sql = "SELECT c.nome, c.provincia, c.stato FROM CITTA c WHERE id_citta = '$id';";

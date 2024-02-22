@@ -399,6 +399,15 @@
       }
   
       foreach ($data as $row){
+        
+        $stats = getStatsPost($cid, $row["mail"]);
+        if ($stats[0]==null){
+          $stats[0]=0;
+        }
+        if ($stats[1]==null){
+          $stats[1]=0;
+        }
+
           if ($type == 'block'){
             if ($row['bloccatoda'] == null){
               $outline = "danger";
@@ -450,13 +459,13 @@
                   POST
               </div>
               <div class='col-md-3'>
-                  <p> Num Min</p> <span class='text-end'> 4</span>
+                  <p> Num Min</p> <span class='text-end'> ".$stats[1]."</span>
               </div>
               <div class='col-md-3'>
-              <p> Num Max</p> <span class='text-end'> 4</span>
+              <p> Num Max</p> <span class='text-end'> ".$stats[0]."</span>
               </div>
               <div class='col-md-3'>
-              <p> Num Medio</p> <span class='text-end'> 4</span>
+              <p> Num Medio</p> <span class='text-end'> ".number_format($stats[2],1)."</span>
               </div>
               
               </div>
@@ -814,7 +823,7 @@
                   <div class='row pt-1'>
                     <div class='form-outline'>
                       <div class='input-group pb-2'>
-                        <input type='text' id='formControlLg' class='form-control form-control-lg pb-2' name='commento'/>
+                        <input type='text' id='formControlLg' class='form-control form-control-lg pb-2' name='commento' maxlength='100'/>
                       </div>
                       <input type='hidden' name='post_id' value='".$row['post_id']."'/>
                       <input type='hidden' name='mail_poster' value='".$row['mail']."'/>
@@ -1023,7 +1032,7 @@
     $sql1 = "SELECT COUNT(post_id) as count FROM POST WHERE mail='$email' AND DATEDIFF(CURRENT_TIMESTAMP, timestamp_post) <7";
     $res1 = $cid->query($sql1);
     $row1 = $res1->fetch_assoc();
-    $sql2 = "SELECT DATE(timestamp_post) AS giorno, COUNT(*) as numero_post FROM POST WHERE post_id IN (SELECT post_id as count FROM POST WHERE mail='$email' AND DATEDIFF(CURRENT_TIMESTAMP, timestamp_post))<7 GROUP BY giorno";
+    $sql2 = "SELECT DATE(timestamp_post) AS giorno, COUNT(*) as numero_post FROM POST WHERE mail='$email' AND post_id IN (SELECT post_id as count FROM POST WHERE mail='$email' AND DATEDIFF(CURRENT_TIMESTAMP, timestamp_post))<7 GROUP BY giorno";
     $res2 = $cid->query($sql2);
     
     if ($res2 != null){

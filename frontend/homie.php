@@ -105,7 +105,7 @@ $cities = getAllCities($cid);
       <div class="modal-body">
       <div class="input-group">
         <span class="input-group-text" name="testo"></span>
-        <textarea class="form-control" aria-label="With textarea" name="testo"></textarea>
+        <textarea class="form-control" aria-label="With textarea" name="testo" maxlength='100'></textarea>
       </div>
       </div>
       <div class="modal-footer">
@@ -132,7 +132,7 @@ $cities = getAllCities($cid);
           <div class="col-md-10">
             <div class="input-group">
               <span class="input-group-text" name="descrizione"></span>
-              <textarea class="form-control" aria-label="With textarea" name="descrizione">Caption</textarea>
+              <textarea class="form-control" aria-label="With textarea" name="descrizione" maxlength='50'></textarea>
             </div>
           </div>
         </div>

@@ -1114,14 +1114,14 @@
   }
 
   function getReference($cid, $post, $comment_id){
-    $sql = "SELECT id_ref, comment_id, post_id_riferito, mail, timestamp_post FROM RIFERRISCE JOIN POST ON post_id_riferito=post_id WHERE comment_id='$comment_id'";
+    $sql = "SELECT id_ref, comment_id, post_id_riferito, mail, timestamp_post FROM RIFERISCE JOIN POST ON post_id_riferito=post_id WHERE comment_id='$comment_id'";
     $res = $cid->query($sql);
 
     if ($res != null){
       $row=$res->fetch_assoc();
     }
     $risultato = [$row['post_id_riferito'], $row['mail'], $row['timestamp_post']];
-    //print_r($risultato); exit();
+    
     return $risultato;
   }
 

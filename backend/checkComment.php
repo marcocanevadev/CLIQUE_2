@@ -41,7 +41,7 @@
     setScore($cid, $mail_post);
   }
   
-  $id_comment = findCommentID($cid, $post_id, $text);
+  $comment_id = findCommentID($cid, $post, $text);
   referenceComment($cid, $reference, $comment_id);
 
   

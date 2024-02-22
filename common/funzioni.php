@@ -1002,7 +1002,7 @@
     }
 
   //returna tutti utenti che non condividono NESSUN hobby
-  function nomatchhobby($cid, $email) {
+  function noSameHobby($cid, $email) {
     $sql = "SELECT DISTINCT mail, nome, cognome FROM USER WHERE mail NOT IN (SELECT DISTINCT mail FROM USER NATURAL JOIN APPREZZA WHERE hobby IN (SELECT hobby FROM APPREZZA WHERE mail = '$email'))";
       $res = $cid->query($sql);
       if ($res != null){
@@ -1019,9 +1019,25 @@
   }
 
   //returba Min medio e max
-  function getstats($cid, $email) {
-    $sql = "";
-    $res = $cid->query($sql);
+  function getStatsPost($cid, $email) {
+    $sql1 = "SELECT COUNT(post_id) as count FROM POST WHERE mail='$email' AND DATEDIFF(CURRENT_TIMESTAMP, timestamp_post) <7";
+    $res1 = $cid->query($sql1);
+    $row1 = $res1->fetch_assoc();
+    $sql2 = "SELECT DATE(timestamp_post) AS giorno, COUNT(*) as numero_post FROM POST WHERE post_id IN (SELECT post_id as count FROM POST WHERE mail='$email' AND DATEDIFF(CURRENT_TIMESTAMP, timestamp_post))<7 GROUP BY giorno";
+    $res2 = $cid->query($sql2);
+    
+    if ($res2 != null){
+      $days = [];
+      while ($row=$res2->fetch_assoc()) {
+          $days[] = array("numero_post"=>$row["numero_post"]);
+      }
+    $valori_numerici = array_column($days, 'numero_post');
+    $max = max($valori_numerici);
+    $min = min($valori_numerici);
+    $avg = $row1['count']/7;
+    $risultato = [$max, $min, $avg];
+    return $risultato;
+    }
   }
 
   //ritorna i 5 user col respect più alto

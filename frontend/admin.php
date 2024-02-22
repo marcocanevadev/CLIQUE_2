@@ -16,6 +16,7 @@ $nblock = AdminNBlock($cid);
 $npost = AdminNPost($cid);
 $utenti = findPeasants($cid);
 $toppers = getTopUsers($cid);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

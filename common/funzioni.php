@@ -10,10 +10,10 @@
         $res=$cid->query($sql);
 
         if ($res==null) {
-            echo 'male';
+            return null;
             //da fare
         } elseif ($res->num_rows==0) {
-            echo 'male male';
+            return null;
             
         } else {
             $row=$res->fetch_assoc();
@@ -67,6 +67,17 @@
         return $type;
       }
       return null;
+    }
+
+    function isBlocked($cid, $email){
+      $sql = "SELECT bloccatoda FROM USER WHERE mail ='$email'";
+      $res = $cid->query($sql);
+      $row = $res->fetch_assoc();
+      if ($row['bloccatoda'] == null ){
+        return false;
+      }else{
+        return true;
+      }
     }
 
 
@@ -458,7 +469,7 @@
     }
 
     function findMyPosts($cid,$mail){
-        $sql="SELECT post_id, timestamp_post, tipo_post, testo_post, img_desc, img_path, img_nome, img_citta
+        $sql="SELECT post_id,mail, timestamp_post, tipo_post, testo_post, img_desc, img_path, img_nome, img_citta
         FROM POST
         WHERE mail='$mail' ORDER BY post_id DESC";
         $res = $cid->query($sql);
@@ -468,6 +479,7 @@
             while ($row=$res->fetch_assoc()) {
                 $postAtt[] = array("post_id"=>$row["post_id"],
                                 "timestamp_post"=>$row["timestamp_post"],
+                                "mail"=>$row['mail'],
                                 "tipo_post"=>$row["tipo_post"],
                                 "testo_post"=>$row["testo_post"],
                                 "img_path"=>$row["img_path"],
@@ -578,6 +590,10 @@
           }
 
           $mipiace = postVote($cid, $row['post_id']);
+          $respect = getRespect($cid, $row['mail']);
+
+          $respect = number_format($respect, 1);
+
           
           
 
@@ -595,6 +611,7 @@
                   <div class='col-sm-10 ps-4'>
                     <p class='card-title'>".$row["nome"]." ".$row["cognome"]."</p>
                     <h6 class='card-subtitle mb-2 text-body-secondary'>".gethandle($row["mail"])."</h6>
+                    <span class='badge text-bg-secondary'>".$respect."</span>
                   </div>
                 </div>
               </div>
@@ -649,50 +666,9 @@
                 
                 
                 echo " 
-                <!-- dopo i commenti la possibilità di inserire il tuo -->
-                <form action='../backend/checkComment.php' method='POST'>
-                <div class='card card-body mb-1'>
-                  <div class='row'>                     
-                    <div class='col-1'>
-                      <img src='https://i.ibb.co/Bgp883W/faccina.png' class='img-circle' height='35' width='35' alt='Avatar'> 
-                    </div>
-                    <div class='col-10'>
-                      <span class='card-title'>".gethandle($_SESSION['email'])."</span>
-                    </div>
-                  </div>                  
-                  <div class='row pt-1'>
-                    <div class='form-outline'>
-                      <div class='input-group pb-2'>
-                        <input type='text' id='formControlLg' class='form-control form-control-lg pb-2' name='commento'/>
-                      </div>
-                      <input type='hidden' name='post_id' value='".$row['post_id']."'/>
-                      <input type='hidden' name='mail_poster' value='".$row['mail']."'/>
-                      <div class='row'>
-                        <div class='col-md-2'>
-                          <input class='btn btn-outline-primary' type='submit' value='Submit'>
-                        </div>
-                        <div class='col-md-4'> </div>
-
-                        <div class='col-md-6'>
-                          <div class='btn-toolbar pb-2' role='toolbar' aria-label='Toolbar with button groups'>
-                            <div class='btn-group me-2' role='group' aria-label='First group' name='indice_gradimento'>
-                              <button type='radio' class='btn btn-outline-primary' name='indice_gradimento' value=-3>-3</button>
-                              <button type='radio' class='btn btn-outline-primary' name='indice_gradimento' value=-2>-2</button>
-                              <button type='radio' class='btn btn-outline-primary' name='indice_gradimento' value=-1>-1</button>
-                              <button type='radio' class='btn btn-outline-primary' name='indice_gradimento' value=0>0</button>
-                              <button type='radio' class='btn btn-outline-primary' name='indice_gradimento' value=1>1</button>
-                              <button type='radio' class='btn btn-outline-primary' name='indice_gradimento' value=2>2</button>
-                              <button type='radio' class='btn btn-outline-primary' name='indice_gradimento' value=3>3</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                     
-                    </div>                        
-                  </div>
-                </div>
-                </form>
+                <!-- dopo i commenti la possibilità di inserire il tuo -->";
+                printCommentForm($row);
+                echo "
               </div>  <!-- chiude il collapse dei commenti-->
             </div>      <!-- chiude il card body del post-->
           </div>          <!-- chiude il card del post -->
@@ -761,7 +737,24 @@
                     
                     echo "
                     <!-- dopo i commenti la possibilità di inserire il tuo -->
-                <form action='../backend/checkComment.php' method='POST'>
+                ";
+
+                printCommentForm($row);
+                echo "
+              </div>  <!-- chiude il collapse dei commenti-->
+                </div>          <!-- chiude il card body -->
+              </div>              <!-- chiude il card dei post-->
+              
+              ".$trailer."
+                </div>
+                ";
+            }
+        }
+    }
+
+    function printCommentForm($row){
+      echo "
+      <form action='../backend/checkComment.php' method='POST'>
                 <div class='card card-body mb-1'>
                   <div class='row'>                     
                     <div class='col-1'>
@@ -804,15 +797,7 @@
                   </div>
                 </div>
                 </form>
-              </div>  <!-- chiude il collapse dei commenti-->
-                </div>          <!-- chiude il card body -->
-              </div>              <!-- chiude il card dei post-->
-              
-              ".$trailer."
-                </div>
-                ";
-            }
-        }
+      ";
     }
 
     function createTextPost($cid, $mail, $text){
@@ -892,7 +877,14 @@
     }
 
     function createComment($cid, $post, $text, $email, $grad){
-      $sql="INSERT INTO `COMMENTO` (`mail_commentatore`, `post_id`, `timestamp_commento`, `indice_gradimento`, `testo_commento`) VALUES ('$email', '$post', CURRENT_TIMESTAMP, '$grad', '$text');";
+
+
+      if ($grad == 'NULL'){
+        $sql="INSERT INTO `COMMENTO` (`mail_commentatore`, `post_id`, `timestamp_commento`, `indice_gradimento`, `testo_commento`) VALUES ('$email', '$post', CURRENT_TIMESTAMP, NULL, '$text');";
+      }else{
+        $sql="INSERT INTO `COMMENTO` (`mail_commentatore`, `post_id`, `timestamp_commento`, `indice_gradimento`, `testo_commento`) VALUES ('$email', '$post', CURRENT_TIMESTAMP, '$grad', '$text');";
+      }
+      
       $res = $cid->query($sql);
       return $res;
     }

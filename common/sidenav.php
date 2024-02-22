@@ -12,6 +12,8 @@
   $handle = gethandle($mail);
   $type = getTypo($cid, $mail);
   $respect = getRespect($cid, $mail);
+
+  $respect = number_format($respect, 1);
   //$name = 'TONy';
 
   $current_page = basename($_SERVER['PHP_SELF']);

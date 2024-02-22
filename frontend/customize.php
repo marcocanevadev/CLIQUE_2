@@ -16,6 +16,11 @@ $bday = getBday($cid, $mail);
 
 $allhobbies = getAllHobbies($cid);
 $hobbies = getHobbies($cid, $mail);
+
+if ($hobbies == null){
+  $hobbies = [];
+}
+
 if (!isset($_SESSION["logged"]))  header('location:../index.php'); 
 
 if (isset($_GET["status"]))

@@ -5,7 +5,9 @@
   include "../common/funzioni.php";
 
   $email = $_SESSION["email"];
-
+  if (isBlocked($cid,$email)){
+    header('location:../frontend/homie.php?status=ko');
+  }
   $text = $_POST['testo'];
   $text=str_replace("'","\\'",$text);
 

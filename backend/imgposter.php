@@ -5,6 +5,10 @@ include "../common/funzioni.php";
 
 $email = $_SESSION["email"];
 
+if (isBlocked($cid,$email)){
+  header('location:../frontend/homie.php?status=ko');
+}
+
 $file_name= $_FILES['fileToUpload']['name'];
 $tmp_name =  $_FILES['fileToUpload']['tmp_name'];
 

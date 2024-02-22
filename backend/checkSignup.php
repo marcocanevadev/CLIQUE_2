@@ -8,6 +8,15 @@
   $passc = $_POST["pwdc"];
   $email = $_POST["email"];
 
+
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    
+    session_destroy();
+
+    header('location:../frontend/signUp.php');
+  }
+  
+
   print_r($pass);
   print_r($passc);
 

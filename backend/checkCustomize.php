@@ -18,6 +18,9 @@ $orientamento = $_POST["orientamento"];
 
 $allhobbies = getAllHobbies($cid);
 $myhobbies = getHobbies($cid, $email);
+if ($myhobbies == null){
+    $myhobbies = [];
+}
 foreach ($allhobbies as $hobi){
     $hobbies[] = $_POST[$hobi]; 
 }

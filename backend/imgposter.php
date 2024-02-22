@@ -15,6 +15,8 @@ $tmp_name =  $_FILES['fileToUpload']['tmp_name'];
 $desc = $_POST['descrizione'];
 $location = $_POST['location'];
 
+
+
 $desc=str_replace("'","\\'",$desc);
 
 $position= strpos($file_name, ".");

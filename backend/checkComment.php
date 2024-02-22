@@ -18,9 +18,11 @@
   $mail_post = $_POST['mail_poster'];
 
 
-  $num_comm = numComm($cid, $email, $post);
-  $liked = liked($cid, $email, $post);
+  //$num_comm = numComm($cid, $email, $post);
+  //$liked = liked($cid, $email, $post);
 
+  $num_comm = 0;
+  $liked = false;
   if ($num_comm > 6){
     header('location:../frontend/homie.php?status=ko');
   }

@@ -564,7 +564,9 @@
 
       $respect = $tot + 7;
 
-      if ($respect<=0) {
+      $admin = getTypo($cid, $email);
+
+      if ($respect<=0 AND $admin == 'User') {
         $sql = "UPDATE USER SET bloccatoda = 'SYSTEM' WHERE mail = '$email'";
         $res = $cid->query($sql);
       }
@@ -677,6 +679,13 @@
           ";
             } else {
                 $city = findPostCity($cid, $row["img_citta"]);
+                if ($city != null){
+                  $citadela = printCity($city);
+                }else{
+                  $citadela = "";
+                }
+                
+                
                 echo "
                 <div class='row pb-2'>".$text.
                 "<div class='card'>
@@ -691,7 +700,7 @@
                       <p class='card-text text-end'>
                         <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-geo-alt-fill' viewBox='0 0 16 16'>
                           <path d='M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6'/>
-                        </svg>".printCity($city)."</p>
+                        </svg>".$citadela."</p>
                         
                     </div>
                   </div>
@@ -809,7 +818,13 @@
 
     function createImgPost($cid, $mail, $desc, $path, $nome, $citta){
 
-        $sql="INSERT INTO `POST` ( `mail`, `timestamp_post`, `tipo_post`, `img_desc`, `img_path`, `img_nome`, `img_citta`) VALUES ( '$mail', CURRENT_TIMESTAMP, 'Image', '$desc', '$path', '$nome', '$citta')";
+        if ($citta == "scegli"){
+          $sql="INSERT INTO `POST` ( `mail`, `timestamp_post`, `tipo_post`, `img_desc`, `img_path`, `img_nome`, `img_citta`) VALUES ( '$mail', CURRENT_TIMESTAMP, 'Image', '$desc', '$path', '$nome', NULL )";
+        }else{
+          $sql="INSERT INTO `POST` ( `mail`, `timestamp_post`, `tipo_post`, `img_desc`, `img_path`, `img_nome`, `img_citta`) VALUES ( '$mail', CURRENT_TIMESTAMP, 'Image', '$desc', '$path', '$nome', '$citta')";
+        }
+
+        
         $res = $cid->query($sql);
         return $res;
     }

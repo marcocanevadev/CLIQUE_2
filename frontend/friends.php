@@ -71,7 +71,7 @@ $d = "" ;
           </div>
           <div class="row pb-2">
             <div class="card card-body ">
-              <h4 class="card-title">Find new friends:</h4>
+              <h4 class="card-title">Find new friends: </h4>
               <div class="row mb-1">
                 
 
@@ -80,7 +80,7 @@ $d = "" ;
                         <button type="button" class="btn btn-outline-primary <?php echo $a ? 'active' : '';?>" id="btnA">Città</button>
                         <button type="button" class="btn btn-outline-primary <?php echo $b ? 'active' : '';?>" id="btnB">Hobby</button>
                         <button type="button" class="btn btn-outline-primary <?php echo $c ? 'active' : '';?>" id="btnC">Orientamento</button>
-                        <button type="button" class="btn btn-outline-primary <?php echo $d ? 'active' : '';?>" id="btnD">Età</button>
+                        
                     </div>
                 </div>
 
@@ -100,10 +100,7 @@ $d = "" ;
                         this.classList.toggle('active');
                     });
 
-                    document.getElementById('btnD').addEventListener('click', function() {
-                        <?php $d = $d ? '' : 'active'; ?>;
-                        this.classList.toggle('active');
-                    });
+                   
                 </script>
 
               

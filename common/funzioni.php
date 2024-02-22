@@ -704,8 +704,8 @@
                 
               foreach ($commenti as $comm){
 
-                $ref = getReference($cid, $row['post_id'], $comm['comment_id']);
-                
+                $refer = getReference($cid, $row['post_id'], $comm['comment_id']);
+                //$refer = helpJesus();
                 echo "<div class='card card-body mb-1'>
                         <div class='row'>
                           <div class='col-1'>
@@ -725,7 +725,7 @@
                         <div class='row'>
                           <div class='col-1'></div>
                           <div class='col-10'>
-                            <p class='card-text'>".$ref['mail']." ".$ref['timestamp_post']."</p>
+                            <p class='card-text'>".$refer['riferisce']." ".$refer['mail']." ".$refer['timestamp_post']."</p>
                           </div>
                         </div>                        
                       </div>";
@@ -748,8 +748,7 @@
                   $citadela = printCity($city);
                 }else{
                   $citadela = "";
-                }
-                
+                }                
                 
                 echo "
                 <div class='row pb-2'>".$text.
@@ -789,6 +788,8 @@
 
                   <div class='collapse' id='collapse".$row['post_id']."'>";
                   foreach ($commenti as $comm){
+
+                    $refer = getReference($cid, $row['post_id'], $comm['comment_id']);
                     echo "<div class='card card-body mb-1'>
                             <div class='row'>
                               <div class='col-1'>
@@ -805,7 +806,13 @@
                                 <p class='card-text'>".$comm['testo_commento']."</p>
                               </div>
                             </div>                        
-                          </div>";
+                            <div class='row'>
+                            <div class='col-1'></div>
+                            <div class='col-10'>
+                              <p class='card-text'>".$refer['riferisce']." ".$refer['mail']." ".$refer['timestamp_post']."</p>
+                            </div>
+                          </div>                        
+                        </div>";
                   }
 
                     
@@ -844,7 +851,7 @@
                   <div class='row pt-1'>
                     <div class='form-outline'>
                       <div class='input-group pb-2'>
-                        <input type='text' id='formControlLg' class='form-control form-control-lg pb-2' name='commento' maxlength='100'/>
+                        <input type='text' id='formControlLg' class='form-control form-control-lg pb-2' name='commento' maxlength='100' required/>
                       </div>
                       <div class='input-group pb-2'>
                         <select class='form-select form-select-md' name ='reference'>";
@@ -1109,7 +1116,7 @@
       $row=$res->fetch_assoc();
     }
 
-    return $row['$comment_id'];
+    return $row['comment_id'];
   }
 
   function referenceComment($cid, $reference, $comment_id) {
@@ -1119,15 +1126,27 @@
   }
 
   function getReference($cid, $post, $comment_id){
-    $sql = "SELECT id_ref, comment_id, post_id_riferito, mail, timestamp_post FROM RIFERISCE JOIN POST ON post_id_riferito=post_id WHERE comment_id='$comment_id'";
+    $sql = "SELECT `post_id_riferito`, `mail`, `timestamp_post` FROM `RIFERISCE` JOIN `POST` ON post_id_riferito = post_id WHERE comment_id = '$comment_id'; ";
     $res = $cid->query($sql);
 
     if ($res != null){
       $row=$res->fetch_assoc();
+      $risultato = array("mail"=>$row["mail"],
+                        "post_id_riferito"=>$row["post_id_riferito"],
+                        "timestamp_post"=>$row['timestamp_post'],
+                        "riferisce"=> 'Riferisce: ');
     }
-    $risultato = [$row['post_id_riferito'], $row['mail'], $row['timestamp_post']];
+    
     
     return $risultato;
+  }
+
+  function helpJesus(){
+    $risultato = array("mail"=>'banana',
+                        "post_id_riferito"=>'111',
+                        "timestamp_post"=>'pesce',);
+    return $risultato;
+
   }
 
 ?>

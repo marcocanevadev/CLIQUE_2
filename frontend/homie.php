@@ -104,7 +104,7 @@ $cities = getAllCities($cid);
       <div class="modal-body">
       <div class="input-group">
         <span class="input-group-text" name="testo"></span>
-        <textarea class="form-control" aria-label="With textarea" name="testo" maxlength='100'></textarea>
+        <textarea class="form-control" aria-label="With textarea" name="testo" maxlength='100' required></textarea>
       </div>
       </div>
       <div class="modal-footer">
@@ -131,7 +131,7 @@ $cities = getAllCities($cid);
           <div class="col-md-10">
             <div class="input-group">
               <span class="input-group-text" name="descrizione"></span>
-              <textarea class="form-control" aria-label="With textarea" name="descrizione" maxlength='50'></textarea>
+              <textarea class="form-control" aria-label="With textarea" name="descrizione" maxlength='50' required></textarea>
             </div>
           </div>
         </div>
@@ -139,7 +139,7 @@ $cities = getAllCities($cid);
         <div class="row mb-1">
           <div class="col-md-12">
             <div class="input-group mb-3">
-              <input type="file" class="form-control" name="fileToUpload"id="inputGroupFile02">
+              <input type="file" class="form-control" name="fileToUpload"id="inputGroupFile02" required>
               <label class="input-group-text" for="inputGroupFile02">Upload</label>
             </div>
           </div>

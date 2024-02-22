@@ -1071,10 +1071,15 @@
           $days[] = array("numero_post"=>$row["numero_post"]);
       }
     $valori_numerici = array_column($days, 'numero_post');
-    $max = max($valori_numerici);
-    $min = min($valori_numerici);
-    $avg = $row1['count']/7;
-    $risultato = [$max, $min, $avg];
+    if (sizeof($valori_numerici) != 0 ){
+      $max = max($valori_numerici);
+      $min = min($valori_numerici);
+      $avg = $row1['count']/7;
+      $risultato = [$max, $min, $avg];
+    }else{
+      $risultato = [0 ,0, 0];
+    }
+    
     return $risultato;
     }
   }

@@ -15,7 +15,7 @@ $nusers = AdminNUser($cid);
 $nblock = AdminNBlock($cid);
 $npost = AdminNPost($cid);
 $utenti = findPeasants($cid);
-$toppers = findPeasants($cid);
+$toppers = getTopUsers($cid);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -118,7 +118,7 @@ $toppers = findPeasants($cid);
             </div>
             <div class="row">
                 <div class="col-md-10">
-                <?php printFriends($cid, $utenti, 'top') ?>
+                <?php printFriends($cid, $toppers, 'top') ?>
                 </div>
                 <div class="col-md-2"></div>
             </div>

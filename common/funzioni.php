@@ -974,7 +974,7 @@
       if ($res != null){
         $user = null;
         while ($row=$res->fetch_assoc()) {
-            $user = array("mail"=>$row["mail"],
+            $user[] = array("mail"=>$row["mail"],
                           "nome"=>$row["nome"],
                           "cognome"=>$row['cognome']);
         }
@@ -991,7 +991,7 @@
       if ($res != null){
         $user = null;
         while ($row=$res->fetch_assoc()) {
-            $user = array("mail"=>$row["mail"],
+            $user[] = array("mail"=>$row["mail"],
                           "nome"=>$row["nome"],
                           "cognome"=>$row['cognome']);
         }
@@ -1008,7 +1008,7 @@
       if ($res != null){
         $user = null;
         while ($row=$res->fetch_assoc()) {
-            $user = array("mail"=>$row["mail"],
+            $user[] = array("mail"=>$row["mail"],
                           "nome"=>$row["nome"],
                           "cognome"=>$row['cognome']);
         }
@@ -1019,8 +1019,9 @@
   }
 
   //returba Min medio e max
-  function getstats($Cid, $email) {
-
+  function getstats($cid, $email) {
+    $sql = "";
+    $res = $cid->query($sql);
   }
 
   //ritorna i 5 user col respect più alto
@@ -1030,10 +1031,11 @@
     if ($res != null){
       $user = null;
       while ($row=$res->fetch_assoc()) {
-          $user = array("mail"=>$row["mail"],
+          $user[] = array("mail"=>$row["mail"],
                         "nome"=>$row["nome"],
                         "cognome"=>$row['cognome']);
       }
+      
       $risultato= $user;
       return $risultato;
     }

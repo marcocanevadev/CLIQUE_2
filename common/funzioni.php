@@ -967,7 +967,7 @@
 
     //returna array con tutti gli utenti che non abitano E non sono nati nella stessa città
     function notSameCity($cid, $email) {
-      $sql = "SELECT mail FROM USER WHERE citta IN (SELECT citta FROM USER WHERE mail = '$email') OR luogo_n IN (SELECT luogo_n FROM USER WHERE mail = '$email')";
+      $sql = "SELECT mail, nome, cognome FROM USER WHERE mail NOT IN (SELECT mail FROM USER WHERE citta IN (SELECT citta FROM USER WHERE mail = '$email') OR luogo_n IN (SELECT luogo_n FROM USER WHERE mail = '$email'))";
       $res = $cid->query($sql);
       if ($res != null){
         $user = null;
@@ -980,7 +980,35 @@
       return null;
     }
 
+    //returna tutti gli user con orientamento diverso
+    function notSameSex($cid, $email) {
+      $sql = "SELECT mail, nome, cognome FROM USER WHERE orientamento NOT IN (SELECT orientamento FROM USER WHERE mail = '$email')";
+      $res = $cid->query($sql);
+      if ($res != null){
+        $user = null;
+        while ($row=$res->fetch_assoc()) {
+            $user = array("mail"=>$row["mail"]);
+        }
+        $risultato= $user;
+        return $risultato;
+      }
+      return null;
+    }
 
+  //returna tutti utenti che non condividono NESSUN hobby
+  function nomatchhobby($cid, $email) {
+    $sql = "SELECT DISTINCT mail, nome, cognome FROM USER WHERE mail NOT IN (SELECT DISTINCT mail FROM USER NATURAL JOIN APPREZZA WHERE hobby IN (SELECT hobby FROM APPREZZA WHERE mail = '$email'))";
+      $res = $cid->query($sql);
+      if ($res != null){
+        $user = null;
+        while ($row=$res->fetch_assoc()) {
+            $user = array("mail"=>$row["mail"]);
+        }
+        $risultato= $user;
+        return $risultato;
+      }
+      return null;
+  }
 
 
 ?>

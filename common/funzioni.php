@@ -937,14 +937,14 @@
     }
 
     function AdminNUser($cid){
-      $sql = "SELECT COUNT(nome) c FROM USER";
+      $sql = "SELECT COUNT(mail) c FROM USER";
       $res = $cid->query($sql);
       $row= $res->fetch_assoc();
       return $row['c'];
     }
 
     function AdminNBlock($cid){
-      $sql = "SELECT COUNT(nome) c FROM USER WHERE bloccatoda IS NOT NULL";
+      $sql = "SELECT COUNT(mail) c FROM USER WHERE bloccatoda IS NOT NULL";
       $res = $cid->query($sql);
       $row= $res->fetch_assoc();
       return $row['c'];
@@ -1129,7 +1129,13 @@
     $sql = "SELECT `post_id_riferito`, `mail`, `timestamp_post` FROM `RIFERISCE` JOIN `POST` ON post_id_riferito = post_id WHERE comment_id = '$comment_id'; ";
     $res = $cid->query($sql);
 
-    if ($res != null){
+
+    $risultato = array("mail"=>'',
+                        "post_id_riferito"=>'',
+                        "timestamp_post"=>'',
+                        "riferisce"=>'');
+
+    if ($res != null and $res->num_rows != 0){
       $row=$res->fetch_assoc();
       $risultato = array("mail"=>$row["mail"],
                         "post_id_riferito"=>$row["post_id_riferito"],

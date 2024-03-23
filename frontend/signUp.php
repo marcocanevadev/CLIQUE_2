@@ -29,7 +29,7 @@
                 
           <form method="POST" action="../backend/checkSignup.php">
             <div class="form-outline mb-4">
-              <input type="email" name="email" class="form-control form-control-lg" pattern="[@\s]+@[^@\s]+\.[^@\s]+" title='aaaaaaaaa@bbbb.ccc'required> email </input>
+              <input type="email" name="email" class="form-control form-control-lg" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" title = "aaaaaaaaaaa@bbbbb.ccc" required> email </input>
             </div>
 
             <div class="form-outline mb-1">

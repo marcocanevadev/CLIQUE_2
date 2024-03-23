@@ -31,7 +31,7 @@
 
   //$num_comm = 0;
   //$liked = false;
-  if ($num_comm >= 6){
+  if ($num_comm >= 5){
     echo "hello";
     
     header('location:../frontend/homie.php?status=ko');

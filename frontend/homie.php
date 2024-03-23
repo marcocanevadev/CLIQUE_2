@@ -57,12 +57,12 @@ $cities = getAllCities($cid);
       
           <div class="col-md-3">
           <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalText">
-            Post testuale
+            New Post
           </button>
           </div>
           <div class="col-md-3">
           <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalImage">
-            Post immaginoso
+            New Image
           </button>
 
           </div>
